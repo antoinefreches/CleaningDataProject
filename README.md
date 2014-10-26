@@ -88,11 +88,19 @@ as the previous variable a, but instead of a logical it is a character vector wi
 to the names of varNames.
 We can perform some cleaning manipulations on c, like replacing the "-" or "()" by empty values. This is done using the gsub function and results 
 in a character vector called e. We apply the tolower() function to e, which gives us the vector f. This is in order to have only non-capital
-letters in our names. Finally, we concatenate "activity" and "individual" to our 79 names. These are going to be the 81 names of our 81 colmumns 
-in combDF2. This gives us a vector g, which we simply assign to the names of combDF2. 
+letters in our names. We could have used more explicit names like replacing std by "standarddeviation" but we disagree with this approach and prefer
+to keep reasonably short names for our columnds. 
+Finally, we concatenate "activity" and "individual" to our 79 names. These are going to be the 81 names of our 81 colmumns in combDF2. This gives 
+us a vector g, which we simply assign to the names of combDF2. 
 
 ##5. From the data set in step 4, creates a second, independent tidy data set with the average of each 
 variable for each activity and each subject.
 
+We load the reshape2 library in order to use the melt and dcast functions. 
+We create a new data frame called MeltDF, which the result of applying the melt function to combDF2, specifying that the 2 ids are "activity" and 
+"individual", and that the variables are the columns corresponding to the names vector f (i.e. all the other columns). 
+MeltDF is now a slim data frame, with 813621 rows and 4 columns.
+We use the dcast function to create RecastDF, where all individuals and activities have been summarized with their mean values. 
+The resulting data frame (RecastDF), had 180 rows and 81 columns. 
 
 

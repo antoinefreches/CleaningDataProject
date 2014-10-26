@@ -7,7 +7,7 @@
 # *********************************************************************************************************************
 
 # First we deal with the training set
-# We start with the x_train data 
+# We start with the X_train data 
 
 Xtrain=read.table("./train/X_train.txt")
 dim(Xtrain)   # we have a look and get familiar with the data
@@ -126,13 +126,14 @@ combDF2[1:10,79:81]
 
 names(combDF2)
 c=grep("std()|mean()",varNames,value=TRUE)
+length(c)
 head(c,50)
 d=gsub("-","",c)
 e=gsub("\\()","",d)
 e
 f=tolower(e)
 f
-length(c)
+length(f)
 g=c(f,c("activity","individual"))
 names(combDF2)=g
 combDF2[1:10,77:81]
@@ -143,9 +144,11 @@ combDF2[1:10,77:81]
 
 library(reshape2)
 MeltDF=melt(combDF2,id=c("activity","individual"),measure.vars=f)
+dim(MeltDF)
 head(MeltDF)
 RecastDF=dcast(MeltDF,individual+activity~variable,mean)
 RecastDF[,1:5]
 class(RecastDF)
 dim(RecastDF)
+
 
