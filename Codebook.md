@@ -1,67 +1,22 @@
-# First please set the working directory as the directory where the Samsung data is located.
 
-# This run_analysis.R file does the following:
+*********************************************************************************************************************
+1.Merges the training and the test sets to create one data set.
+*********************************************************************************************************************
 
-# *********************************************************************************************************************
-# 1.Merges the training and the test sets to create one data set.
-# *********************************************************************************************************************
+First we deal with the training set. We read-in the x_train data which we store in "Xtrain".
+We have a look and get familiar with the data.
+We then do the same with the y_train data Which we store in Ytrain, and the subject_train data which goes
+into SubTrain. 
 
-# First we deal with the training set
-# We start with the x_train data 
+We then perform 2 first "merging operations". We start by merging the Xtrain data with the the YTrain 
+(this creates firstMerge) and then we add the Subtrain to create secondMerge.
 
-Xtrain=read.table("./train/X_train.txt")
-dim(Xtrain)   # we have a look and get familiar with the data
-names(Xtrain)
-Xtrain[1:10,1:10]
+We repeat the same process for the test data. 
+We create a variable Xtest that stores the data coming from x_test.txt.
+We create a variable Ytest that stores the data coming from y_test.txt.
+We create a variable Subtest that stores the data coming from subject_test.txt.
 
-# We add the y_train data...
-
-Ytrain=read.table("./train/y_train.txt")
-dim(Ytrain)
-names(Ytrain)
-Ytrain[1:10,]
-table(Ytrain$V1)
-
-# ... and the subject_train data
-
-Subtrain=read.table("./train/subject_train.txt")
-dim(Subtrain)
-names(Subtrain)
-Subtrain[1:10,]
-table(Subtrain$V1)
-
-# We now perform 2 first "merging operations". 
-# I.e. simply putting together the x_train data with the the y_train and the sub_train data
-
-firstMerge=cbind(Xtrain,Ytrain)
-dim(firstMerge)
-secondMerge=cbind(firstMerge,Subtrain)
-dim(secondMerge)
-
-# Now we start again and perform basically the same thing for the test data. 
-
-Xtest=read.table("./test/x_test.txt")
-dim(Xtest)
-names(Xtest)
-Xtest[1:10,1:10]
-
-# We add the y_test data...
-
-Ytest=read.table("./test/y_test.txt")
-dim(Ytest)
-names(Ytest)
-Ytest[1:10,]
-table(Ytest$V1)
-
-# ... and the subject_test data
-
-Subtest=read.table("./test/subject_test.txt")
-dim(Subtest)
-names(Subtest)
-Subtest[1:10,]
-table(Subtest$V1)
-
-# We now perform the 2 same first "merging operations". 
+We now perform the 2 same first "merging operations". 
 # I.e. simply putting together the x_test data with the the y_test and the sub_test data
 
 firstMerge2=cbind(Xtest,Ytest)
@@ -127,14 +82,9 @@ combDF2[1:10,79:81]
 names(combDF2)
 c=grep("std()|mean()",varNames,value=TRUE)
 head(c,50)
-d=gsub("-","",c)
-e=gsub("\\()","",d)
-e
-f=tolower(e)
-f
 length(c)
-g=c(f,c("activity","individual"))
-names(combDF2)=g
+d=c(c,c("Activity","Individual"))
+names(combDF2)=d
 combDF2[1:10,77:81]
 
 # *********************************************************************************************************************
@@ -142,10 +92,9 @@ combDF2[1:10,77:81]
 # *********************************************************************************************************************
 
 library(reshape2)
-MeltDF=melt(combDF2,id=c("activity","individual"),measure.vars=f)
+MeltDF=melt(combDF2,id=c("Activity","Individual"),measure.vars=c)
 head(MeltDF)
-RecastDF=dcast(MeltDF,individual+activity~variable,mean)
+RecastDF=dcast(MeltDF,Individual+Activity~variable,mean)
 RecastDF[,1:5]
 class(RecastDF)
 dim(RecastDF)
-
