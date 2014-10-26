@@ -7,7 +7,7 @@ directory as the directory where the raw data for this project is located.
 
 This run_analysis.R file does the following:
 
-#1. Merges the training and the test sets to create one data set.
+##1. Merges the training and the test sets to create one data set.
 
 ### First we deal with the training set.
 We start with the x_train.txt data, which we read in using the read.table function and which we store in the variabe called Xtrain.
@@ -52,7 +52,7 @@ We simply use the rbind function to put the secondMerge2 below the seconMerge da
 of columns. The name of the resulting data frame is combDF. It contains all the data of interest. combDF has 10299 rows and 563 column, 
 which is expected. 
 
-# 2. Extracts only the measurements on the mean and standard deviation for each measurement. 
+##2. Extracts only the measurements on the mean and standard deviation for each measurement. 
 
 We read-in the variable names which are located in the features.txt file. We again use the read.table function and load the data in a 
 variable called myFeatures. 
@@ -67,7 +67,7 @@ We can then subset out of the columns of combDF only the columns which contain m
 the columns. The resulting data frame is called combDF2. Instead of 563 columns, it has now only 81 columns. It has still the same number
 of rows as combDF (10299).
 
-# 3. Uses descriptive activity names to name the activities in the data set
+##3. Uses descriptive activity names to name the activities in the data set
 
 We again use the read.table function to read the activity_labels.txt file. The data is stored in tableActivity. This is a simple table of 
 6 rows and 2 columns establishing a correspondance between our y column (the ones that contains integer values ranging from 1 to 6) and 
@@ -80,8 +80,19 @@ tableActivity3. The resulting variable is called activityNames. It is a vector o
 same order of the orginal column 80 of combDF2.
 Finally, we simply re-assign the 80th column to the vector activityNames.  
 
-# 4. Appropriately labels the data set with descriptive variable names. 
+##4. Appropriately labels the data set with descriptive variable names. 
 
-# 5. From the data set in step 4, creates a second, independent tidy data set with the average of each 
+We now use the grep function on the same varNames vector as before, specifying value=TRUE. This allows us to not only extract only the 79 names
+which contain std() or mean(), but also to explicitely store those names in a new variable called c. That variable contains the same names
+as the previous variable a, but instead of a logical it is a character vector with the explicit names, not the logical that where pointing 
+to the names of varNames.
+We can perform some cleaning manipulations on c, like replacing the "-" or "()" by empty values. This is done using the gsub function and results 
+in a character vector called e. We apply the tolower() function to e, which gives us the vector f. This is in order to have only non-capital
+letters in our names. Finally, we concatenate "activity" and "individual" to our 79 names. These are going to be the 81 names of our 81 colmumns 
+in combDF2. This gives us a vector g, which we simply assign to the names of combDF2. 
+
+##5. From the data set in step 4, creates a second, independent tidy data set with the average of each 
 variable for each activity and each subject.
+
+
 
